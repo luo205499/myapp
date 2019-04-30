@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   void _showMessage(String val) {
     showDialog<Null>(
       context: context,
+      barrierDismissible: true,//必须点击取消或者确定关闭提示框
       builder: (BuildContext context) {
         return new AlertDialog(
           title: Text('提示'),

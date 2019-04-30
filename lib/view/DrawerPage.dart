@@ -18,9 +18,9 @@ class DrawerPage extends StatelessWidget{
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
-                "http://119.23.51.242:8080/images/1555577867108_IMG_2765.JPG",),
+                "https://resources.ninghao.net/images/overkill.png",),
               fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(Color.fromARGB(255, 250, 150, 150), BlendMode.colorBurn),
+//              colorFilter: ColorFilter.mode(Color.fromARGB(255, 250, 150, 150), BlendMode.hardLight),
             ),
           ),
         ),

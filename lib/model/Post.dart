@@ -30,13 +30,13 @@ final List<Post> posts=[
       title:'测试数据3',
       author:'Nik',
       content:'南繁事业从50年代开始至今已经持续了60年，为我国种业创新和粮食安全做出了巨大的贡献。今天我们就一起来看看几代南繁人的奋斗故事。',
-      ImgUrl: 'http://119.23.51.242:8080/images/1555577867108_IMG_2765.JPG'
+      ImgUrl: 'http://h.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=0d023672312ac65c67506e77cec29e27/9f2f070828381f30dea167bbad014c086e06f06c.jpg'
   ),
   Post(
       title:'测试数据4',
       author:'Marry',
       content:'最近阳标仁得到一个好消息，国家加大了对南繁基地的保护和建设，他所在的这片水稻育种基地的水利设施将得到高标准改善。',
-      ImgUrl: 'http://119.23.51.242:8080/images/1555577867108_IMG_2766.JPG'
+      ImgUrl: 'https://resources.ninghao.net/images/overkill.png'
   ),
   Post(
       title:'测试数据5',

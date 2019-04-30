@@ -1,142 +1,126 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'package:myapp/fragment/HomeFragment.dart';
+import 'package:myapp/fragment/FindPage.dart';
+import 'package:myapp/fragment/MinePage.dart';
+import 'package:myapp/view/DrawerPage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(new MainPage());
 
-class MyApp extends StatelessWidget {
+class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Startup Name Generator',
-      theme: new ThemeData(
-        primaryColor: Colors.white,
-      ),
-      home: new MyHomePage(title: "hello flutter"),
-    );
+        debugShowCheckedModeBanner: false, home: new MainPageWidget());
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
+class MainPageWidget extends StatefulWidget {
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  State<StatefulWidget> createState() {
+    return new MainPageState();
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MainPageState extends State<MainPageWidget> {
+  int _tabIndex = 0;
+  var tabImages;
+  var appBarTitles = ['首页', '发现', '我的'];
+
+  /*
+   * 存放三个页面，跟fragmentList一样
+   */
+  var _pageList;
+
+
+  /*
+   * 获取bottomTab的颜色和文字
+   */
+  Text getTabTitle(int curIndex) {
+    if (curIndex == _tabIndex) {
+      return new Text(
+        appBarTitles[curIndex],
+      );
+    } else {
+      return new Text(
+        appBarTitles[curIndex],
+      );
+    }
+  }
+
+  /*
+   * 根据image路径获取图片
+   */
+  Image getTabImage(path) {
+    return new Image.asset(path, width: 24.0, height: 24.0);
+  }
+
+  void initData() {
+
+    /*
+     * 三个子界面
+     */
+    _pageList = [
+      new HomeFragment(),
+      new FindPage(),
+      new MinePage(),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.add),
-        title: Text("hello"),
+    //初始化数据
+    initData();
+    return MaterialApp(
+      theme: ThemeData(
+        primaryColor: Color.fromARGB(255, 250, 150, 150),
       ),
-      body: new ListView(
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.library_music,
-                    color: Colors.blue,
-                  ),
-                  Text("hello")
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.library_music,
-                    color: Colors.blue,
-                  ),
-                  Text("hello")
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.library_music,
-                    color: Colors.blue,
-                  ),
-                  Text("hello")
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.library_music,
-                    color: Colors.blue,
-                  ),
-                  Text("hello")
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.library_music,
-                    color: Colors.blue,
-                  ),
-                  Text("hello")
-                ],
-              ),
-            ],
-          ),
-          new Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(20.0),
-                color: Colors.blue,
-                child: Icon(
-                  Icons.satellite,
-                  size: 80.0,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[Text("标题"), Text("内容部分......")],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(20.0),
-                child: Text("2019-4-3"),
-              ),
-            ],
-          ),
+      home: new WillPopScope(
+      onWillPop: _onWillPop,
+      child:Scaffold(
+        body: _pageList[_tabIndex],
+        bottomNavigationBar: new BottomNavigationBar(
+          items: <BottomNavigationBarItem>[
+            new BottomNavigationBarItem(
+                icon: Icon(Icons.home), title: getTabTitle(0)),
+            new BottomNavigationBarItem(
+                icon: Icon(Icons.explore), title: getTabTitle(1)),
+            new BottomNavigationBarItem(
+                icon: Icon(Icons.person), title: getTabTitle(2)),
+          ],
+          type: BottomNavigationBarType.fixed,
+          //默认选中首页
+          currentIndex: _tabIndex,
+          iconSize: 24.0,
+          //点击事件
+          onTap: (index) {
+            setState(() {
+              _tabIndex = index;
+            });
+          },
+        ),
+        drawer: Drawer(
+          child: DrawerPage(),
+        ),
+      ),
+    ),);
+  }
 
-          new Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Flexible(
-                child: Icon(
-                  Icons.satellite,
-                  size: 80.0,
-                ),
-                flex: 1,
-              ),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[Text("标题"), Text("内容部分......")],
-                ),
-                flex: 2,
-              ),
-              Flexible(
-                child: Text("2019-4-3"),
-                flex: 1,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  int last = 0;
+  Future<bool> _onWillPop() {
+    int now = DateTime.now().millisecondsSinceEpoch;
+    if (now - last > 800) {
+      Fluttertoast.showToast(
+          msg: '再次点击退出应用',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+//          backgroundColor: Colors.white,
+          textColor: Colors.black);
+      last = DateTime.now().millisecondsSinceEpoch;
+      return Future.value(false);
+    } else {
+      return Future.value(true);
+    }
   }
 }

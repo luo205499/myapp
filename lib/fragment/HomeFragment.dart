@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/view/MainPage.dart';
-import 'package:myapp/view/DrawerPage.dart';
 import 'package:myapp/view/AnimationWidget.dart';
 import 'package:myapp/view/CheckBoxPage.dart';
 import 'package:myapp/view/SliverGirldPage.dart';
@@ -12,8 +11,6 @@ import 'package:myapp/view/DataTablePage.dart';
 import 'package:myapp/view/CardPage.dart';
 import 'package:myapp/view/StepperPage.dart';
 
-
-void main() => runApp(new HomeFragment());
 
 class HomeFragment extends StatefulWidget {
   @override
@@ -59,6 +56,9 @@ class _HomeFragmentState extends State<HomeFragment>
           elevation: 0.0,
           title: Row(
             children: <Widget>[
+              new GestureDetector(child: Icon(Icons.menu),onTap: (){
+                Scaffold.of(context).openDrawer();
+              },),
               Container(
                 margin: EdgeInsets.only(left: 8.0),
                 alignment: Alignment.centerLeft,
@@ -99,13 +99,11 @@ class _HomeFragmentState extends State<HomeFragment>
           ),
           centerTitle: true,
         ),
-        drawer: Drawer(
-          child: DrawerPage(),
-        ),
-        bottomNavigationBar: BottomNavigationPage(),
+
+//        bottomNavigationBar: BottomNavigationPage(),
         body: new Column(
           children: <Widget>[
-            Container(
+           new Container(
               height: 53.0,
               child: TabBar(
                 indicatorColor: Color.fromARGB(255, 240, 100, 60),
@@ -118,11 +116,11 @@ class _HomeFragmentState extends State<HomeFragment>
                 controller: _controller,
               ),
             ),
-            Container(
+            new Container(
               height: 2.0,
               color: Color.fromRGBO(0, 0, 0, 0.2),
             ),
-            Expanded(
+            new Expanded(
               child: TabBarView(
                 children: <Widget>[
                   MainPage(),
