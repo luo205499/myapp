@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/view/MainPage.dart';
+import 'package:myapp/view/IndexPage.dart';
 import 'package:myapp/view/AnimationWidget.dart';
 import 'package:myapp/view/CheckBoxPage.dart';
 import 'package:myapp/view/SliverGirldPage.dart';
@@ -11,7 +11,6 @@ import 'package:myapp/view/DataTablePage.dart';
 import 'package:myapp/view/CardPage.dart';
 import 'package:myapp/view/StepperPage.dart';
 
-
 class HomeFragment extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -22,6 +21,9 @@ class HomeFragment extends StatefulWidget {
 class _HomeFragmentState extends State<HomeFragment>
     with SingleTickerProviderStateMixin {
   var _controller;
+
+  List abc;
+
 
   List<Tab> tabar = <Tab>[
     Tab(text: "直播"),
@@ -56,10 +58,13 @@ class _HomeFragmentState extends State<HomeFragment>
           elevation: 0.0,
           title: Row(
             children: <Widget>[
-              new GestureDetector(child: Icon(Icons.menu),onTap: (){
-                Scaffold.of(context).openDrawer();
-              },),
-              Container(
+              new GestureDetector(
+                child: Icon(Icons.menu),
+                onTap: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              ),
+              new InkWell(child:  Container(
                 margin: EdgeInsets.only(left: 8.0),
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 4),
@@ -73,22 +78,22 @@ class _HomeFragmentState extends State<HomeFragment>
                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
                   color: Colors.black38,
                 ),
-              ),
-              Padding(
+              ),onTap: (){},),
+              new Padding(
                 padding: EdgeInsets.only(left: 20.0),
                 child: Icon(
                   Icons.settings_overscan,
                   color: Colors.white,
                 ),
               ),
-              Padding(
+              new Padding(
                 padding: EdgeInsets.only(left: 20.0),
                 child: Icon(
                   Icons.file_download,
                   color: Colors.white,
                 ),
               ),
-              Padding(
+              new Padding(
                 padding: EdgeInsets.only(left: 20.0),
                 child: Icon(
                   Icons.message,
@@ -103,7 +108,7 @@ class _HomeFragmentState extends State<HomeFragment>
 //        bottomNavigationBar: BottomNavigationPage(),
         body: new Column(
           children: <Widget>[
-           new Container(
+            new Container(
               height: 53.0,
               child: TabBar(
                 indicatorColor: Color.fromARGB(255, 240, 100, 60),
@@ -123,7 +128,7 @@ class _HomeFragmentState extends State<HomeFragment>
             new Expanded(
               child: TabBarView(
                 children: <Widget>[
-                  MainPage(),
+                  IndexPage(),
                   CardPage(),
                   StepperPage(),
                   AnimationWidget(),

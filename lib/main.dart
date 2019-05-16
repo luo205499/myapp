@@ -1,126 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:myapp/SplashPage.dart';
 import 'package:myapp/fragment/HomeFragment.dart';
 import 'package:myapp/fragment/FindPage.dart';
 import 'package:myapp/fragment/MinePage.dart';
 import 'package:myapp/view/DrawerPage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-void main() => runApp(new MainPage());
-
-class MainPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-        debugShowCheckedModeBanner: false, home: new MainPageWidget());
-  }
-}
-
-class MainPageWidget extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return new MainPageState();
-  }
-}
-
-class MainPageState extends State<MainPageWidget> {
-  int _tabIndex = 0;
-  var tabImages;
-  var appBarTitles = ['首页', '发现', '我的'];
-
-  /*
-   * 存放三个页面，跟fragmentList一样
-   */
-  var _pageList;
-
-
-  /*
-   * 获取bottomTab的颜色和文字
-   */
-  Text getTabTitle(int curIndex) {
-    if (curIndex == _tabIndex) {
-      return new Text(
-        appBarTitles[curIndex],
-      );
-    } else {
-      return new Text(
-        appBarTitles[curIndex],
-      );
-    }
-  }
-
-  /*
-   * 根据image路径获取图片
-   */
-  Image getTabImage(path) {
-    return new Image.asset(path, width: 24.0, height: 24.0);
-  }
-
-  void initData() {
-
-    /*
-     * 三个子界面
-     */
-    _pageList = [
-      new HomeFragment(),
-      new FindPage(),
-      new MinePage(),
-    ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    //初始化数据
-    initData();
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Color.fromARGB(255, 250, 150, 150),
-      ),
-      home: new WillPopScope(
-      onWillPop: _onWillPop,
-      child:Scaffold(
-        body: _pageList[_tabIndex],
-        bottomNavigationBar: new BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            new BottomNavigationBarItem(
-                icon: Icon(Icons.home), title: getTabTitle(0)),
-            new BottomNavigationBarItem(
-                icon: Icon(Icons.explore), title: getTabTitle(1)),
-            new BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: getTabTitle(2)),
-          ],
-          type: BottomNavigationBarType.fixed,
-          //默认选中首页
-          currentIndex: _tabIndex,
-          iconSize: 24.0,
-          //点击事件
-          onTap: (index) {
-            setState(() {
-              _tabIndex = index;
-            });
-          },
-        ),
-        drawer: Drawer(
-          child: DrawerPage(),
-        ),
-      ),
-    ),);
-  }
-
-  int last = 0;
-  Future<bool> _onWillPop() {
-    int now = DateTime.now().millisecondsSinceEpoch;
-    if (now - last > 800) {
-      Fluttertoast.showToast(
-          msg: '再次点击退出应用',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIos: 1,
-//          backgroundColor: Colors.white,
-          textColor: Colors.black);
-      last = DateTime.now().millisecondsSinceEpoch;
-      return Future.value(false);
-    } else {
-      return Future.value(true);
-    }
+import 'package:flutter/services.dart';
+void main(){
+  runApp(new SplashPage1());
+  if (Platform.isAndroid) {
+    print("in");
+// 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
+    //热部署情况下，必须重启，貌似是热部署不会重新执行main()
+    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 }
